@@ -1,86 +1,122 @@
- 
- //importar Librerias
- 
- const moment = require('moment');
- const http  = require('http');
-const { format } = require('path');
+// importar las librerias necesarias
 
- //definir valores de inicializacion
+const moment = require('moment');
+const http = require('http');
+const fs = require('fs');
+const process = require('process');
 
- const host = 'localhost'
- const port =8080;
+// Definir las constantes 
 
- //Crear el servidor
- const server = http.createServer((request, response) =>{
-     //console.console.log(request.url);
+const host = "localhost";
+const port = 8080;
 
-     if(request.url ==='/'){
-         // esto es para la cabecera
-         response.writeHead(200, {
-             'Content-Type': 'text/html',
-             
-         });
-         //esto es para el cuerpo
-         response.write('<h1>Ya se Node!</h1>');
-         //llamar al metodo end para enviar el paquete
-         response.end();
-     }
-     else
 
-     if(request.url ==='/wh'){
-        // esto es para la cabecera
-        response.writeHead(200, {
-            'Content-Type': 'text/html',
-            
-        });
-        //esto es para el cuerpo
-        response.write('<p style="color: orange">Happy Halloween!</p>');
-        //llamar al metodo end para enviar el paquete
-        response.end();
-    }
-    else
 
-    if(request.url ==='/myjson'){
-        // esto es para la cabecera
-        response.writeHead(200, {
-            'Content-Type': 'application/json',
-            
-        });
-        //esto es para el cuerpo
-        response.write(JSON.stringify({'nombre': 'espagueti', 'apellido': 'Volador'}));
-        //llamar al metodo end para enviar el paquete
-        response.end();
-    }
-    else
+// crear el servidor
 
-    if(request.url ==='/timenow'){
-        // esto es para la cabecera
-        response.writeHead(200, {
-            'Content-Type': 'text/html',
-            
-        });
-        //esto es para el cuerpo
-        const ahora = moment().format('LTS')
-        response.write(ahora);
-        //llamar al metodo end para enviar el paquete
-        response.end();
-    }
-    else
-
-         // esto es para la cabecera
-        response.writeHead(404, {
-            'Content-Type': 'text/html',
-            
-        });
-        //esto es para el cuerpo
-        response.write('<p style="color: red">Estos no son los androides que buscas!</p>');
-        //llamar al metodo end para enviar el paquete
-        response.end();
+const server = http.createServer( (request, response) => {
     
- });
+    
+    
+    if (request.url === "/") {
+
+        // Http Headers
+        response.writeHead(200, {
+          'Content-Type' : 'text/html'
+        });
+
+        // Http Body
+        response.write('<h1>Ya se Node!!!</h1>');
+
+        // Send http message
+        response.end();
+    }
+    else
+
+    if (request.url === "/hw") {
+
+        // Http Headers
+        response.writeHead(200, {
+          'Content-Type' : 'text/html'
+        });
+
+        // Http Body
+        response.write('<p style="color: orange">Happy Halloween!</p>');
+
+        // Send http message
+        response.end();
+    }
+
+    else
+
+    if (request.url === "/myjson") {
+
+        // Http Headers
+        response.writeHead(200, {
+          'Content-Type' : 'application/json'
+        });
+
+        // Http Body
+        response.write(JSON.stringify({ "nombre": "Espagueti", "apellido": "Volador" }));
+
+        // Send http message
+        response.end();
+    }
+
+    else
 
 
-//arrancar el servidor
- server.listen(port, host, ()=> {
-     console.log(`este servidor esta funcionando en http://${host}:${port}`);
- })
+    if (request.url === "/timenow") {
+
+        // Http Headers
+        response.writeHead(200, {
+          'Content-Type' : 'text/html'
+        });
+
+        const ahora = moment().format("LTS");
+
+        // Http Body
+        response.write(ahora);
+
+        // Send http message
+        response.end();
+    }
+
+    else
+
+    if (request.url === "/web") {
+        fs.readFile('front/index.html', (error, data) => {
+
+            response.writeHead(200, { 'Content-Type': 'text/html' });
+            response.write(data);
+            response.end();
+
+        });
+    }
+
+
+
+
+    else
+
+             // Http Headers
+        {response.writeHead(401, {
+            'Content-Type' : 'text/html'
+        });
+
+        // Http Body
+        response.write('<p style="font-size:100px;color:red">Estos androides no son los que buscas</p>');
+
+        // Send http message
+        response.end();
+    }
+
+    
+
+});
+
+// ----- Start server -----
+
+server.listen(port, host, () => {
+    console.log(`Server is running on http://${host}:${port}`);
+});
